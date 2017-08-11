@@ -1,87 +1,120 @@
-let lists = document.getElementById('lists')
+/*
+RULES
+- Do TODO's in Alpha order, starting with TODO:A
+- Do not modify api timeout's, they simulate the server lag
+- Feel free to optimize the code however you see fit
+*/
 
+const api = {
+  data : [{ "isActive": true,"content": "take out the trash"},
+            {"isActive": false,"content": "feed the kid"},
+            {"isActive": true,"content": "doctors apointment"}],
 
-class TodoItem {
-  constructor ( content ) {
-    this.item = this.createItem(content)
-    this.item
-      .getElementsByClassName('fa-check')[0]
-      .addEventListener( 'click' , e => {
-        this.toggleActiveState()
-      })
-    return this.item
-  }
-  // Create dom El
-  createItem ( content ) {
-    let container =  document.createElement('a')
-    container.id = this.id = Math.random()
-    container.className = 'panel-block'
-    container.innerHTML = `<span class="panel-icon">
-                      <i class="fa fa fa-check" aria-hidden="true"></i>
-                    </span>
-                    <span class="has-text-grey">${content}</span>`
-    return container
-  }
-  // Toggle if it's completed or not
-  toggleActiveState () {
-    this.item.className = this.item.className.indexOf('is-active') > -1 ? 'panel-block' : 'panel-block is-active'
-  }
+  // TODO:A: fix the resolve & explain why this.data is undefined
+  get: () => new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('data', this.data)
+      resolve(this.data)
+    }, 3000)
+  }),
+
+  set: (i) => new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('data', api.data)
+      resolve(api.data)
+    }, 3000)
+  }),
+
+  // TODO:C: Fix Mutation on searches
+  // TODO:C: Fix for boolean values ex: api.search('isactive', true) should work
+  // Search Todos
+  // k = key, val = value of the key
+  // ex search('content', 'feed') returns only todo's that have contain 'feed'
+  search: (k, val) => new Promise((resolve, reject) => {
+    api.data.map((v,i,a)=>{
+      if (v[k].indexOf(val) === -1){
+        api.data.splice(0,i)
+      }
+    })
+    setTimeout(() => {
+      console.log('data', api.data)
+      resolve(api.data)
+    }, 1000)
+  })
 }
 
-class TodoList {
-  constructor(title) {
-    this.list = this.createList(title)
-    this.listItems = this.list.getElementsByClassName('todo-list')[0]
-
-    // add event listener for adding new items
-    this.list
-      .getElementsByClassName('input')[0]
-      .addEventListener( 'keyup' , e =>{
-        if (e.keyCode == 13 && e.target.value !== '') {
-          this.add(new TodoItem(e.target.value))
-          // clear input
-          e.target.value = ''
-        }
-      })
-
-    // insert into dom
-    lists.prepend(this.list)
+class app {
+  constructor(el, title) {
+    api.get().then( res => this.data = res)
+    // set properties
+    this.el = document.getElementById(el)
+    this.title = title
+    this.render()
   }
   // Create List
-  createList (title) {
-    let container =  document.createElement('div')
-    container.className = 'container has-text-centered'
-    container.innerHTML = `<nav class="panel" style="background-color: #fff">
-                      <p class="panel-heading">
-                        ${title}
-                      </p>
-                      <div class="panel-block">
-                        <p class="control has-icons-left">
-                          <input class="input is-small" type="text" placeholder="Add a todo">
-                          <span class="icon is-small is-left">
-                            <i class="fa fa-add"></i>
-                          </span>
-                        </p>
-                      </div>
-                      <div class="todo-list">
-                      </div>
-                    </nav>`
-    return container
+  render () {
+    // TODO:B: Fix runtime error "length is undefined"
+    // TODO:B: Fix the undefined in the dom list
+    let count = this.data.length,
+          listItems
+    // create list
+    while (count--){
+      listItems += `<a class="panel-block ${( this.data[count].isActive ? '' : 'is-active' )}">
+                      <span class="panel-icon">
+                        <i class="fa fa-check"></i>
+                      </span>
+                      ${this.data[count].content}
+                    </a>`
+    }
+    const list = `<div class="panel bg-w">
+                    <p class="panel-heading">
+                     ${this.title}
+                    </p>
+                    <p class="control has-icons-left">
+                      <!-- inline js is bad practice but this is for testing purposes -->
+                      <input class="input is-small" type="text" placeholder="Add" onkeydown="javascript: if(event.keyCode == 13){ todoApp.add(this.value); this.value='';}">
+                      <span class="icon is-small is-left">
+                        <i class="fa fa-plus"></i>
+                      </span>
+                    </p>
+                    ${listItems}
+                  </div>`
+    // update dom
+    this.el.innerHTML = list
   }
+  // TODO:C: Update the server with the new item
   // Add a Todo
   add (i) {
-    console.log('add')
-    this.listItems.prepend(i)
+    api.set(i).then( res => {
+      this.data = res
+      this.render()
+    })
   }
+  // TODO:D: Remove item
   // Remove a Todo
-  remove () {
-    console.log('remove')
+  remove (i) {
   }
-  // Toggle done state of Todo
-  toggleActive () {
-    console.log('toggle')
+  // TODO:E: Toggle the State of the item
+  // Toggle Todo State
+  toggleState (i) {
+
+  }
+  // TODO:F: create debounce so user can only filter once every 5 seconds
+  // TODO:F: let user know the filter is processing/loading
+  // Filter
+  filter (key, val) {
+    if (key) {
+      api.search(key, val).then( res => {
+        this.data = res
+        this.render()
+      })
+    } else {
+      api.get().then( res => {
+        this.data = res
+        this.render()
+      })
+    }
   }
 }
 
-
-const myList = new TodoList('todo list');
+const todoApp = new app('lists', 'To Do List')

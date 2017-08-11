@@ -7,53 +7,63 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.0/css/bulma.min.css">
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+  <style>
+    html { background-color: hsl(171, 100%, 41%)}
+    .bg-w { background-color: #fff }
+  </style>
 </head>
 <body>
-  <section class="hero is-primary is-fullheight">
-  <!-- Hero header: will stick at the top -->
-  <div class="hero-head">
-    <header class="nav">
-      <div class="container is-content">
-        <div class="nav-right nav-menu">
-          <div class="nav-item">
-            <a class="button is-primary is-small is-inverted">
-              All
-            </a>
+  <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column"></div>
+          <div class="column is-two-thirds">
+            <!-- Nav -->
+            <header class="nav">
+              <div class="container is-content">
+                <div class="nav-right nav-menu">
+                  <div class="nav-item">
+                    <!-- inline js is bad practice but this is for testing purposes -->
+                    <a class="button is-primary is-small is-inverted" onClick="todoApp.filter()">
+                      All
+                    </a>
+                  </div>
+                  <div class="nav-item">
+                    <!-- inline js is bad practice but this is for testing purposes -->
+                    <a class="button is-primary is-small is-inverted" onClick="todoApp.filter('isActive', false)">
+                      Active
+                    </a>
+                  </div>
+                  <div class="nav-item">
+                    <!-- inline js is bad practice but this is for testing purposes -->
+                    <a class="button is-primary is-small is-inverted" onClick="todoApp.filter('isActive', true)">
+                      Completed
+                    </a>
+                  </div>
+                  <div class="nav-item">
+                    <p class="control has-icons-left">
+                      <!-- inline js is bad practice but this is for testing purposes -->
+                      <input class="input is-small" type="text" placeholder="search" onkeydown="javascript: if(event.keyCode == 13) todoApp.filter('content', this.value);">
+                      <span class="icon is-small is-left">
+                        <i class="fa fa-search"></i>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </header>
+            <!-- lists go here -->
+            <div id="lists">
+
+            </div>
           </div>
-          <div class="nav-item">
-            <a class="button is-primary is-small is-inverted">
-              Active
-            </a>
-          </div>
-          <div class="nav-item">
-            <a class="button is-primary is-small is-inverted">
-              Completed
-            </a>
-          </div>
-          <div class="nav-item">
-            <p class="control has-icons-left">
-              <input class="input is-small" type="text" placeholder="search">
-              <span class="icon is-small is-left">
-                <i class="fa fa-search"></i>
-              </span>
-            </p>
-          </div>
+          <div class="column"></div>
         </div>
       </div>
-    </header>
-  </div>
+  </section>
 
-  <!-- Hero content: will be in the middle -->
-  <div id="lists" class="hero-body">
-
-  </div>
-
-  <!-- Hero footer: will stick at the bottom -->
-  <div class="hero-foot">
-  </div>
-</section>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.1/react-dom.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
