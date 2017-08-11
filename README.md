@@ -1,4 +1,7 @@
+# TODO JS Test
+This test is designed to see if the developer understand the following in Javascript:
+Scoping/context, Hoisting, Runtime, Mutation, Debounce
+
 # RULES
-- Do the `TODO`'s in Alpha order, starting with `TODO:A`
+- Solve the `TODO`'s and fix the errors.
 - **Do not modify api timeout's**, they simulate the server lag
-- Feel free to optimize the code however you see fit

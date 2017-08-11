@@ -2,7 +2,6 @@
 RULES
 - Do TODO's in Alpha order, starting with TODO:A
 - Do not modify api timeout's, they simulate the server lag
-- Feel free to optimize the code however you see fit
 */
 
 const api = {
@@ -10,26 +9,26 @@ const api = {
             {"isActive": false,"content": "feed the kid"},
             {"isActive": true,"content": "doctors apointment"}],
 
-  // TODO:A: fix the resolve & explain why this.data is undefined
+  // TODO: fix the resolve & explain why this.data is undefined
+  // Get All Todo's
   get: () => new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log('data', this.data)
-      resolve(this.data)
-    }, 3000)
+      resolve(this.data) // DO NOT DO resolve(api.data)
+    }, 500)
   }),
 
+  // Add Todo
   set: (i) => new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log('data', api.data)
       resolve(api.data)
-    }, 3000)
+    }, 100)
   }),
 
-  // TODO:C: Fix Mutation on searches
-  // TODO:C: Fix for boolean values ex: api.search('isactive', true) should work
   // Search Todos
   // k = key, val = value of the key
-  // ex search('content', 'feed') returns only todo's that have contain 'feed'
+  // ex: search('content', 'feed') returns only todo's that have contain 'feed'
   search: (k, val) => new Promise((resolve, reject) => {
     api.data.map((v,i,a)=>{
       if (v[k].indexOf(val) === -1){
@@ -39,11 +38,15 @@ const api = {
     setTimeout(() => {
       console.log('data', api.data)
       resolve(api.data)
-    }, 1000)
+    }, 100)
   })
 }
 
+// Init the app
+const todoApp = new app('lists', 'To Do List')
+
 class app {
+
   constructor(el, title) {
     api.get().then( res => this.data = res)
     // set properties
@@ -51,15 +54,16 @@ class app {
     this.title = title
     this.render()
   }
+
   // Create List
   render () {
-    // TODO:B: Fix runtime error "length is undefined"
-    // TODO:B: Fix the undefined in the dom list
+    // TODO: Fix runtime error "length is undefined"
+    // TODO: Fix the undefined in the dom list
     let count = this.data.length,
-          listItems
+        listItems
     // create list
     while (count--){
-      listItems += `<a class="panel-block ${( this.data[count].isActive ? '' : 'is-active' )}">
+      listItems += `<a class="panel-block ${( this.data[count].isActive ? '' : 'is-active' )}" onClick="todoApp.toggleState()">
                       <span class="panel-icon">
                         <i class="fa fa-check"></i>
                       </span>
@@ -79,28 +83,28 @@ class app {
                     </p>
                     ${listItems}
                   </div>`
-    // update dom
+
     this.el.innerHTML = list
   }
-  // TODO:C: Update the server with the new item
-  // Add a Todo
+
+  // TODO: Update the server with the new item
+  // Add Todo
   add (i) {
     api.set(i).then( res => {
       this.data = res
       this.render()
     })
   }
-  // TODO:D: Remove item
-  // Remove a Todo
-  remove (i) {
-  }
-  // TODO:E: Toggle the State of the item
+
+  // TODO: Toggle the State of the item
   // Toggle Todo State
   toggleState (i) {
 
   }
-  // TODO:F: create debounce so user can only filter once every 5 seconds
-  // TODO:F: let user know the filter is processing/loading
+
+  // TODO: Fix Mutation on searches
+  // TODO: Fix for boolean values ex: api.search('isactive', true) should work
+  // TODO: create debounce so user can only filter once every 3 seconds
   // Filter
   filter (key, val) {
     if (key) {
@@ -116,5 +120,3 @@ class app {
     }
   }
 }
-
-const todoApp = new app('lists', 'To Do List')
