@@ -1,15 +1,8 @@
-/*
-RULES
-- Do TODO's in Alpha order, starting with TODO:A
-- Do not modify api timeout's, they simulate the server lag
-*/
-
 const api = {
   data : [{ "isActive": true,"content": "take out the trash"},
             {"isActive": false,"content": "feed the kid"},
             {"isActive": true,"content": "doctors apointment"}],
 
-  // TODO: fix the resolve & explain why this.data is undefined
   // Get All Todo's
   get: () => new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -19,7 +12,7 @@ const api = {
   }),
 
   // Add Todo
-  set: (i) => new Promise((resolve, reject) => {
+  set: () => new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log('data', api.data)
       resolve(api.data)
@@ -57,8 +50,6 @@ class app {
 
   // Create List
   render () {
-    // TODO: Fix runtime error "length is undefined"
-    // TODO: Fix the undefined in the dom list
     let count = this.data.length,
         listItems
     // create list
@@ -87,7 +78,6 @@ class app {
     this.el.innerHTML = list
   }
 
-  // TODO: Update the server with the new item
   // Add Todo
   add (i) {
     api.set(i).then( res => {
@@ -96,15 +86,11 @@ class app {
     })
   }
 
-  // TODO: Toggle the State of the item
   // Toggle Todo State
-  toggleState (i) {
+  toggleState () {
 
   }
 
-  // TODO: Fix Mutation on searches
-  // TODO: Fix for boolean values ex: api.search('isactive', true) should work
-  // TODO: create debounce so user can only filter once every 3 seconds
   // Filter
   filter (key, val) {
     if (key) {

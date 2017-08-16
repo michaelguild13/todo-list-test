@@ -8,7 +8,7 @@ Scoping/context, Hoisting, Runtime, Mutation, Debounce
 
 1. Hosting: app is not defined
 2. Run Time: Cannot read property 'length' of undefined
-3. Scope/Context: Cannot read property 'length' of undefined
+3. Scope/Context: Cannot read property 'length' of undefined. Fix the api so that it uses `this.data` for the `resolve` instead of using `api.data`. Also, clean the api calls so they all use `this.data` instead of `api.data`.
 4. Definition: In the UI, the list displays an undefined, fix it
 5. Add Feature: `App.add()` is incomplete, it's been hooked up to the UI already but currently doesn't add to the api.
 6. Toggle Feature: Have `App.toggle()` toggle the state of the selected item. It's already hooked up in the UI.

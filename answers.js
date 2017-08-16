@@ -43,17 +43,19 @@ const api = {
   // Search Todos
   // k = key, val = value of the key
   // ex: search('content', 'feed') returns only todo's that have contain 'feed'
-  search: (k, val) => new Promise((resolve, reject) => {
-    setTimeout(() => {
-      let filter
-      if ( typeof val === 'string') {
-        filter = api.data.filter((v) => v[k].indexOf(val) > -1 )
-      } else {
-        filter = api.data.filter((v) => v[k] === val )
-      }
-      resolve(filter)
-    }, 100)
-  })
+  search: function (k, val) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let filter
+        if ( typeof val === 'string') {
+          filter = api.data.filter((v) => v[k].indexOf(val) > -1 )
+        } else {
+          filter = api.data.filter((v) => v[k] === val )
+        }
+        resolve(filter)
+      }, 100)
+    })
+  }
 }
 
 class app {
