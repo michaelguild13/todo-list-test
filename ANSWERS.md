@@ -1,14 +1,6 @@
 1. move `const todoApp = new app('lists', 'To Do List')` after app class (bottom of file)
-2. in `class app` call `this.render()` in the promise for `api.get()`
-~~~
-class app {
-  constructor(el, title) {
-    api.get().then( res => {
-      this.data = res
-      this.render()
-    })
-~~~
-3. change from arrow function to function scope. arrow functions are enclosing scope as for functions are lexical
+
+2. change from arrow function to function scope. arrow functions are enclosing scope as for functions are lexical
 ~~~
 get: function() {
   return new Promise((resolve, reject) => {
@@ -18,6 +10,15 @@ get: function() {
     }, 500)
   })
 },
+~~~
+3. in `class app` call `this.render()` in the promise for `api.get()`
+~~~
+class app {
+  constructor(el, title) {
+    api.get().then( res => {
+      this.data = res
+      this.render()
+    })
 ~~~
 4. set `listItems = ''`. It's undefined because initially `listItems` is declared but not set.
 5. use the event value to push the new item to the `api.data`
